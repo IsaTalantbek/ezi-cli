@@ -1,0 +1,22 @@
+{
+    "name": "easy-cli",
+    "version": "0.0.1",
+    "description": "make easy CLI",
+    "license": "ISC",
+    "author": "isat",
+    "type": "module",
+    "bin": {
+        "easycli": "dist/bin/bin.js"
+    },
+    "scripts": {
+        "build": "tsc -p tsconfig.build.json"
+    },
+    "dependencies": {
+        "prettier": "^3.5.3",
+        "yargs": "^17.7.2"
+    },
+    "devDependencies": {
+        "@types/node": "^22.13.9",
+        "@types/yargs": "^17.0.33"
+    }
+}

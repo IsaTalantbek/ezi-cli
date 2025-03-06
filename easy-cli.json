@@ -1,0 +1,13 @@
+{
+    "cli-name": "easycli",
+    "commands": {
+        "test": {
+            "handler": "./scripts/test.js",
+            "flags": { "your-name": { "type": "string" } }
+        },
+        "test-commonJS": {
+            "handler": "./scripts/test.cjs",
+            "flags": { "your-name": { "type": "boolean" } }
+        }
+    }
+}
