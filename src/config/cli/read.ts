@@ -1,18 +1,16 @@
 import path from 'path';
-import { commandMessage } from '../../util/message.js';
+import { Message } from '../../util/message.js';
 import { ReadConstants } from '../constants/constants.js';
 import fs from 'fs';
-
-export interface FlagConfig {
-    alias: string;
-    type: 'string' | 'boolean' | 'number';
-}
+import yaml from 'yaml';
+import { Options } from 'yargs';
+import { FileExtension } from '../../util/file.extension.js';
 
 export interface CommandConfig {
     handler: string;
     description: string;
     flags?: {
-        [flag: string]: FlagConfig;
+        [flag: string]: Options;
     };
 }
 
@@ -24,22 +22,38 @@ export interface CLIConfig {
 }
 
 export class ReadConfigFile {
-    static getConfig(): CLIConfig {
+    static getConfig(error: boolean): CLIConfig | null {
         const configPath = ReadConstants.getConstants()['config-file-path'];
 
-        const fullConfigPath = path.join(process.cwd(), configPath);
+        const fullConfigPath = path.resolve(configPath);
 
         if (fs.existsSync(fullConfigPath)) {
             const rawData = fs.readFileSync(fullConfigPath, 'utf-8');
 
+            switch (FileExtension.get(fullConfigPath)) {
+                case 'json':
+                    return JSON.parse(rawData);
+                case 'yaml':
+                    return yaml.parse(rawData);
+                default:
+                    Message.sample({
+                        type: 'error',
+                        path: fullConfigPath,
+                        comment: `config file has invalid extension, available extensions: "json", "yaml"`
+                    });
+            }
+
             return JSON.parse(rawData);
         } else {
-            commandMessage({
-                type: 'error',
-                path: configPath,
-                comment: 'config file was not found'
-            });
-            process.exit(1);
+            if (error) {
+                Message.sample({
+                    type: 'error',
+                    path: configPath,
+                    comment: 'config file was not found'
+                });
+                process.exit(1);
+            }
+            return null;
         }
     }
 }

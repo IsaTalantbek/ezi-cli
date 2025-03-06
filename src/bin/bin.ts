@@ -1,19 +1,21 @@
 #!/usr/bin/env node
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { ReadConfigFile } from '../config/cli/read.js';
+import { CLIConfig, ReadConfigFile } from '../config/cli/read.js';
 import { CommandLoader } from '../commands/loader.js';
 import { UserCommand } from '../commands/custom.js';
 
 class CLI {
     config;
     constructor() {
-        this.config = ReadConfigFile.getConfig();
+        this.config = ReadConfigFile.getConfig(true) as CLIConfig;
     }
     async run() {
         const cliName = this.config['cli-name'];
 
-        const yargsInstance = yargs(hideBin(process.argv)).scriptName(cliName);
+        const yargsInstance = yargs(hideBin(process.argv))
+            .scriptName(cliName)
+            .showHelpOnFail(false);
 
         const commandsLoader = new CommandLoader(yargsInstance);
 

@@ -1,9 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { Message } from '../../util/message.js';
+import { FileExtension } from '../../util/file.extension.js';
 
 export interface IConstants {
-    'cli-name': string;
     'config-file-path': string;
 }
 
@@ -17,5 +18,37 @@ export class ReadConstants {
         // Получаем абсолютный путь к текущему модулю
         const currentFilePath = fileURLToPath(import.meta.url);
         return path.join(path.dirname(currentFilePath), './constants.json');
+    }
+
+    public static syncConstant(configPath: string): void {
+        const fullPath = path.resolve(configPath);
+
+        if (fs.existsSync(fullPath)) {
+            const extension = FileExtension.get(fullPath);
+            if (extension !== 'json' || 'yaml') {
+                Message.sample({
+                    type: 'error',
+                    path: fullPath,
+                    comment: `the extension of this configuration file is not ".json" or ".ymal"`
+                });
+            }
+
+            const constantData: IConstants = {
+                'config-file-path': configPath
+            };
+
+            const content = JSON.stringify(constantData);
+
+            const constantsConfigPath = this.givePathToConstants();
+
+            fs.writeFileSync(constantsConfigPath, content, 'utf-8');
+        } else {
+            Message.sample({
+                type: 'error',
+                path: fullPath,
+                comment:
+                    'in package.json.config.easy-cli-path contains incorrect path to configuration file'
+            });
+        }
     }
 }

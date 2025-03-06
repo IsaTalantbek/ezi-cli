@@ -1,5 +1,6 @@
 import path from 'path';
-import { commandMessage } from '../util/message.js';
+import { Message } from '../util/message.js';
+
 export class HandlerExecuter {
     static async use(handlerPath: string, argv: any) {
         const absolutePath = `file://${path.resolve(handlerPath)}`;
@@ -10,13 +11,13 @@ export class HandlerExecuter {
             } else if (typeof module === 'function') {
                 await module(argv);
             } else {
-                commandMessage({
+                Message.sample({
                     type: 'error',
                     comment: 'Handler module does not export a function'
                 });
             }
         } catch (error) {
-            commandMessage({
+            Message.sample({
                 type: 'error',
                 comment: `Error executing handler: ${error}`
             });
