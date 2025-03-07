@@ -31,11 +31,21 @@ export class InitConfig {
                 ? {
                       test: {
                           handler: './cli-scripts/test.js',
-                          flags: { 'your-name': { type: 'string' } }
+                          descriptions: 'test ESM handler',
+                          flags: {
+                              'your-name': {
+                                  type: 'string'
+                              }
+                          }
                       },
                       'test-commonJS': {
                           handler: './cli-scripts/test.cjs',
-                          flags: { 'your-name': { type: 'string' } }
+                          descriptions: 'test CommonJS handler',
+                          flags: {
+                              'your-name': {
+                                  type: 'string'
+                              }
+                          }
                       }
                   }
                 : {}

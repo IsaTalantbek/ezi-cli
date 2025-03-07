@@ -1,6 +1,6 @@
 {
     "name": "ezi-cli",
-    "version": "0.1.0",
+    "version": "0.1.2",
     "license": "ISC",
     "type": "module",
     "author": "isat",
@@ -32,5 +32,11 @@
     },
     "bugs": {
         "url": "https://github.com/IsaTalantbek/ezi-cli/issues"
-    }
+    },
+    "keywords": [
+        "cli",
+        "ezi-cli",
+        "yargs",
+        "easy-cli"
+    ]
 }
