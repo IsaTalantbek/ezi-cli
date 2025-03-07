@@ -8,7 +8,7 @@ import { InitCommand } from '../commands/system/init.js';
 import { SyncCommand } from '../commands/system/sync.js';
 
 class CLI {
-    config;
+    config: CLIConfig;
     constructor() {
         this.config = ReadConfigFile.getConfig(false) as CLIConfig;
     }

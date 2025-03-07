@@ -8,7 +8,7 @@ export interface IConstants {
     'config-file-path': string;
 }
 
-export class ReadConstants {
+export class Constants {
     public static getConstants(): IConstants {
         const constantsPath = this.givePathToConstants();
         return JSON.parse(fs.readFileSync(constantsPath, 'utf-8'));
@@ -32,10 +32,9 @@ export class ReadConstants {
         if (fs.existsSync(fullPath)) {
             const extension = FileExtension.get(fullPath);
             if (extension !== 'json' && extension !== 'yaml') {
-                Message.sample({
-                    type: 'error',
+                Message.error({
                     path: fullPath,
-                    comment: `the extension of this configuration file is not ".json" or ".ymal"`
+                    error: `the extension of this configuration file is not ".json" or ".ymal"`
                 });
             }
 
@@ -49,11 +48,9 @@ export class ReadConstants {
 
             fs.writeFileSync(constantsConfigPath, content, 'utf-8');
         } else {
-            Message.sample({
-                type: 'error',
+            Message.error({
                 path: fullPath,
-                comment:
-                    'in package.json/config.ezi-cli-path contains incorrect path to configuration file'
+                error: 'in package.json/config.ezi-cli-path contains incorrect path to configuration file'
             });
         }
     }

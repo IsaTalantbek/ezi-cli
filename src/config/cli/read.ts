@@ -1,6 +1,6 @@
 import path from 'path';
 import { Message } from '../../util/message.js';
-import { ReadConstants } from '../constants/constants.js';
+import { Constants } from '../constants/constants.js';
 import fs from 'fs';
 import yaml from 'yaml';
 import { Options } from 'yargs';
@@ -22,7 +22,7 @@ export interface CLIConfig {
 
 export class ReadConfigFile {
     static getConfig(error: boolean): CLIConfig | null {
-        const configPath = ReadConstants.getConstants()['config-file-path'];
+        const configPath = Constants.getConstants()['config-file-path'];
 
         const fullConfigPath = path.resolve(configPath);
 
@@ -30,12 +30,10 @@ export class ReadConfigFile {
             const rawData = fs.readFileSync(fullConfigPath, 'utf-8');
             if (!rawData) {
                 if (error) {
-                    Message.sample({
-                        type: 'error',
+                    Message.error({
                         path: configPath,
-                        comment: 'config file is empty'
+                        error: 'config file is empty'
                     });
-                    process.exit(1);
                 }
                 return null;
             }
@@ -46,22 +44,18 @@ export class ReadConfigFile {
                 case 'yaml':
                     return yaml.parse(rawData);
                 default:
-                    Message.sample({
-                        type: 'error',
+                    Message.error({
                         path: fullConfigPath,
-                        comment: `config file has invalid extension, available extensions: "json", "yaml"`
+                        error: `config file has invalid extension, available extensions: "json", "yaml"`
                     });
             }
-
             return JSON.parse(rawData);
         } else {
             if (error) {
-                Message.sample({
-                    type: 'error',
-                    path: configPath,
-                    comment: 'config file was not found'
+                Message.error({
+                    path: fullConfigPath,
+                    error: 'config file was not found'
                 });
-                process.exit(1);
             }
             return null;
         }

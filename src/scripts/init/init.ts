@@ -5,6 +5,7 @@ import yaml from 'yaml';
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { SyncConfigs } from '../sync/sync.js';
+import { Message } from '../../util/message.js';
 
 export class InitConfig {
     path: string = './ezi-cli.json';
@@ -22,48 +23,56 @@ export class InitConfig {
     }
 
     private configFile(): void {
-        const rawData = fs.readFileSync('./package.json', 'utf-8');
+        try {
+            const rawData = fs.readFileSync('./package.json', 'utf-8');
 
-        const packageJson = JSON.parse(rawData);
+            const packageJson = JSON.parse(rawData);
 
-        const config = {
-            commands: this.test
-                ? {
-                      test: {
-                          handler: './cli-scripts/test.js',
-                          descriptions: 'test ESM handler',
-                          flags: {
-                              'your-name': {
-                                  type: 'string'
+            const config = {
+                commands: this.test
+                    ? {
+                          test: {
+                              handler: './cli-scripts/test.js',
+                              descriptions: 'test ESM handler',
+                              flags: {
+                                  'your-name': {
+                                      type: 'string'
+                                  }
                               }
-                          }
-                      },
-                      'test-commonJS': {
-                          handler: './cli-scripts/test.cjs',
-                          descriptions: 'test CommonJS handler',
-                          flags: {
-                              'your-name': {
-                                  type: 'string'
+                          },
+                          'test-commonJS': {
+                              handler: './cli-scripts/test.cjs',
+                              descriptions: 'test CommonJS handler',
+                              flags: {
+                                  'your-name': {
+                                      type: 'string'
+                                  }
                               }
                           }
                       }
-                  }
-                : {}
-        };
+                    : {}
+            };
 
-        const data =
-            FileExtension.get(this.path) === 'json'
-                ? JSON.stringify(config, null, 2)
-                : yaml.stringify(config);
-        if (!packageJson.config) {
-            packageJson.config = {}; // Если config нет, создаем его
+            const data =
+                FileExtension.get(this.path) === 'json'
+                    ? JSON.stringify(config, null, 2)
+                    : yaml.stringify(config);
+            if (!packageJson.config) {
+                packageJson.config = {}; // Если config нет, создаем его
+            }
+            packageJson.config['ezi-cli-path'] = this.path;
+            fs.writeFileSync(
+                './package.json',
+                JSON.stringify(packageJson, null, 2)
+            );
+            fs.writeFile(this.path, data);
+        } catch (error) {
+            Message.error({
+                error: error,
+                comment:
+                    'when trying to create a configuration file, and also add the path to it in package.json/config.ezi-cli-path'
+            });
         }
-        packageJson.config['ezi-cli-path'] = this.path;
-        fs.writeFileSync(
-            './package.json',
-            JSON.stringify(packageJson, null, 2)
-        );
-        fs.writeFile(this.path, data);
     }
 
     private testScripts(): void {

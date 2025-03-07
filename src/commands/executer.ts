@@ -2,7 +2,7 @@ import path from 'path';
 import { Message } from '../util/message.js';
 
 export class HandlerExecuter {
-    static async use(handlerPath: string, argv: any) {
+    static async use(handlerPath: string, argv: any): Promise<void> {
         const absolutePath = `file://${path.resolve(handlerPath)}`;
         try {
             const module = await import(absolutePath);
@@ -11,15 +11,15 @@ export class HandlerExecuter {
             } else if (typeof module === 'function') {
                 await module(argv);
             } else {
-                Message.sample({
-                    type: 'error',
-                    comment: 'Handler module does not export a function'
+                Message.error({
+                    error: 'Handler module does not export a function',
+                    comment: 'Make default export a function'
                 });
             }
         } catch (error) {
-            Message.sample({
-                type: 'error',
-                comment: `Error executing handler: ${error}`
+            Message.error({
+                error: error,
+                comment: 'when trying to export and execute the function'
             });
         }
     }

@@ -1,5 +1,5 @@
 import { Message } from '../../util/message.js';
-import { ReadConstants } from '../../config/constants/constants.js';
+import { Constants } from '../../config/constants/constants.js';
 import fs from 'fs';
 
 export class SyncConfigs {
@@ -8,12 +8,11 @@ export class SyncConfigs {
             fs.readFileSync('./package.json', 'utf-8')
         );
         if (!packageJson?.config['ezi-cli-path']) {
-            Message.sample({
-                type: 'error',
-                comment: 'package.json/config.ezi-cli-path is not exist'
+            Message.error({
+                error: 'package.json/config.ezi-cli-path is not exist'
             });
         } else {
-            ReadConstants.syncConstant();
+            Constants.syncConstant();
         }
     }
 }
