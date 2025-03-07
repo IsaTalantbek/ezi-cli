@@ -33,7 +33,7 @@ export class InitConfig {
                     ? {
                           test: {
                               handler: './cli-scripts/test.js',
-                              descriptions: 'test ESM handler',
+                              description: 'test ESM handler',
                               flags: {
                                   'your-name': {
                                       type: 'string'
@@ -42,7 +42,7 @@ export class InitConfig {
                           },
                           'test-commonJS': {
                               handler: './cli-scripts/test.cjs',
-                              descriptions: 'test CommonJS handler',
+                              description: 'test CommonJS handler',
                               flags: {
                                   'your-name': {
                                       type: 'string'

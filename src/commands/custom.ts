@@ -7,7 +7,7 @@ export class UserCommand extends BaseCommand {
     constructor(command: string, commandConfig: CommandConfig) {
         super(
             command,
-            commandConfig.description || 'Description is missing',
+            commandConfig.description || 'description is missing',
             (yargs: Argv) => {
                 if (commandConfig.flags) {
                     for (const [flagName, flagConfig] of Object.entries(

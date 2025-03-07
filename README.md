@@ -18,7 +18,7 @@ Once the configuration file is created, you will see something like this in it:
     "commands": {
         "test": {
             "handler": "./cli-scripts/test.js",
-            "descriptions": "test ESM handler",
+            "description": "test ESM handler",
             "flags": {
                 "your-name": {
                     "type": "string"
@@ -27,7 +27,7 @@ Once the configuration file is created, you will see something like this in it:
         },
         "test-commonJS": {
             "handler": "./cli-scripts/test.cjs",
-            "descriptions": "test CommonJS handler",
+            "description": "test CommonJS handler",
             "flags": {
                 "your-name": {
                     "type": "string"
