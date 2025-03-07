@@ -17,6 +17,6 @@
         "noUnusedParameters": true, // Ошибка при неиспользуемых параметрах
         "noImplicitReturns": true, // Ошибка при отсутствии return в некоторых ветках функции
         "noFallthroughCasesInSwitch": true, // Ошибка при неявном падении в switch
-        "useUnknownInCatchVariables": true, // Использование unknown вместо any в переменных catch
+        "useUnknownInCatchVariables": true // Использование unknown вместо any в переменных catch
     }
 }

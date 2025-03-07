@@ -5,5 +5,5 @@
         "rootDir": "src"
     },
     "include": ["src", "src/**/*.json"],
-    "exclude": ["node_modules", "src/samples/*"]
+    "exclude": ["node_modules"]
 }

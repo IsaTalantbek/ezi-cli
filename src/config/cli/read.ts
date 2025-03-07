@@ -15,7 +15,6 @@ export interface CommandConfig {
 }
 
 export interface CLIConfig {
-    'cli-name': string;
     commands: {
         [command: string]: CommandConfig;
     };
@@ -29,6 +28,17 @@ export class ReadConfigFile {
 
         if (fs.existsSync(fullConfigPath)) {
             const rawData = fs.readFileSync(fullConfigPath, 'utf-8');
+            if (!rawData) {
+                if (error) {
+                    Message.sample({
+                        type: 'error',
+                        path: configPath,
+                        comment: 'config file is empty'
+                    });
+                    process.exit(1);
+                }
+                return null;
+            }
 
             switch (FileExtension.get(fullConfigPath)) {
                 case 'json':

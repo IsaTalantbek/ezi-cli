@@ -4,28 +4,32 @@ import { hideBin } from 'yargs/helpers';
 import { CLIConfig, ReadConfigFile } from '../config/cli/read.js';
 import { CommandLoader } from '../commands/loader.js';
 import { UserCommand } from '../commands/custom.js';
+import { InitCommand } from '../commands/system/init.js';
+import { SyncCommand } from '../commands/system/sync.js';
 
 class CLI {
     config;
     constructor() {
-        this.config = ReadConfigFile.getConfig(true) as CLIConfig;
+        this.config = ReadConfigFile.getConfig(false) as CLIConfig;
     }
     async run() {
-        const cliName = this.config['cli-name'];
-
         const yargsInstance = yargs(hideBin(process.argv))
-            .scriptName(cliName)
+            .scriptName('ezi')
             .showHelpOnFail(false);
 
         const commandsLoader = new CommandLoader(yargsInstance);
-
-        for (const [commandName, commandConfig] of Object.entries(
-            this.config.commands
-        )) {
-            commandsLoader.addCommand(
-                new UserCommand(commandName, commandConfig)
-            );
+        if (this.config) {
+            for (const [commandName, commandConfig] of Object.entries(
+                this.config.commands
+            )) {
+                commandsLoader.addCommand(
+                    new UserCommand(commandName, commandConfig)
+                );
+            }
         }
+        commandsLoader.addCommand(new InitCommand());
+        commandsLoader.addCommand(new SyncCommand());
+
         commandsLoader.loadCommands();
         yargsInstance.parseAsync();
     }

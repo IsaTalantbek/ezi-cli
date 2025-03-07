@@ -20,12 +20,18 @@ export class ReadConstants {
         return path.join(path.dirname(currentFilePath), './constants.json');
     }
 
-    public static syncConstant(configPath: string): void {
+    public static syncConstant(eziCliPath?: string): void {
+        const configPath = eziCliPath
+            ? eziCliPath
+            : JSON.parse(fs.readFileSync('./package.json', 'utf-8')).config[
+                  'ezi-cli-path'
+              ];
+
         const fullPath = path.resolve(configPath);
 
         if (fs.existsSync(fullPath)) {
             const extension = FileExtension.get(fullPath);
-            if (extension !== 'json' || 'yaml') {
+            if (extension !== 'json' && extension !== 'yaml') {
                 Message.sample({
                     type: 'error',
                     path: fullPath,
@@ -47,7 +53,7 @@ export class ReadConstants {
                 type: 'error',
                 path: fullPath,
                 comment:
-                    'in package.json.config.easy-cli-path contains incorrect path to configuration file'
+                    'in package.json/config.ezi-cli-path contains incorrect path to configuration file'
             });
         }
     }

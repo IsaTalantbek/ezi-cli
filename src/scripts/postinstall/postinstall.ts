@@ -1,16 +1,22 @@
 import fs from 'fs';
 import { ReadConstants } from '../../config/constants/constants.js';
+import { Message } from '../../util/message.js';
 
 export class Postinstall {
-    public static syncConfigs(): void {
+    public static syncConfigs(check?: boolean): void {
         const rawData = fs.readFileSync('package.json', 'utf-8');
         const packageJson = JSON.parse(rawData);
         if (packageJson?.config) {
-            if (packageJson.config['easy-cli-path']) {
-                ReadConstants.syncConstant(packageJson.config['easy-cli-path']);
-
+            if (packageJson.config['ezi-cli-path']) {
+                ReadConstants.syncConstant(packageJson.config['ezi-cli-path']);
                 process.exit(1);
             }
+        }
+        if (check) {
+            Message.sample({
+                type: 'error',
+                comment: 'package.json/config.ezi-cli-path is not exist'
+            });
         }
     }
 }

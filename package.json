@@ -1,27 +1,36 @@
 {
-    "name": "easy-cli",
-    "version": "0.0.1",
-    "description": "make easy CLI",
+    "name": "ezi-cli",
+    "version": "0.1.0",
     "license": "ISC",
-    "author": "isat",
     "type": "module",
-    "bin": {
-        "postinstall": "node dist/scripts/postinstall/postinstall.js",
-        "easy": "./dist/bin/bin.js"
-    },
-    "scripts": {
-        "build": "tsc -p tsconfig.build.json"
-    },
+    "author": "isat",
     "dependencies": {
+        "fs-extra": "^11.3.0",
         "yaml": "^2.7.0",
         "yargs": "^17.7.2"
     },
-    "devDependencies": {
-        "prettier": "^3.5.3",
-        "@types/node": "^22.13.9",
-        "@types/yargs": "^17.0.33"
+    "scripts": {
+        "build": "tsc -p tsconfig.build.json && copyfiles -u 1 src/**/*.{js,cjs} dist/",
+        "postinstall": "node dist/scripts/postinstall/postinstall.js"
     },
-    "config": {
-        "easy-cli-path": "easy-cli.json"
+    "bin": {
+        "ezi": "dist/bin/bin.js"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^11.0.4",
+        "@types/node": "^22.13.9",
+        "@types/yargs": "^17.0.33",
+        "copyfiles": "^2.4.1",
+        "prettier": "^3.5.3"
+    },
+    "files": [
+        "dist"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/IsaTalantbek/ezi-cli.git"
+    },
+    "bugs": {
+        "url": "https://github.com/IsaTalantbek/ezi-cli/issues"
     }
 }
