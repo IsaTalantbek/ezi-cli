@@ -28,7 +28,7 @@ export class InitConfig {
                 commands: this.test
                     ? {
                           test: {
-                              handler: 'test.js',
+                              handler: 'test-cli.js',
                               description: 'test ESM handler',
                               flags: {
                                   'your-name': {
@@ -40,7 +40,7 @@ export class InitConfig {
                               }
                           },
                           'test-commonJS': {
-                              handler: 'test.cjs',
+                              handler: 'test-cli.cjs',
                               description: 'test CommonJS handler',
                               flags: {
                                   'your-name': {

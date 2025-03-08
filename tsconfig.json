@@ -1,22 +1,22 @@
 {
     "compilerOptions": {
         "target": "ES2022",
-        "module": "nodenext", // Использование ES-модулей, что предпочтительнее для современных приложений
-        "moduleResolution": "nodenext", // Модульное разрешение через Node.js
-        "esModuleInterop": true, // Поддержка импорта CommonJS-экспортов как ES-модулей
-        "forceConsistentCasingInFileNames": true, // Обеспечение строгой чувствительности к регистру в именах файлов
-        "strict": true, // Включение всех строгих проверок
-        "strictPropertyInitialization": true, // Строгая проверка инициализации свойств классов
-        "noImplicitAny": true, // Запрещает использование типа any без явного указания
-        "noImplicitThis": true, // Запрещает использование `this` с неявным типом
-        "alwaysStrict": true, // Включает строгий режим для всего кода
-        "skipLibCheck": true, // Пропускает типизацию .d.ts файлов для улучшения производительности
-        "skipDefaultLibCheck": true, // Отключает проверку типов в стандартных библиотеках
-        "resolveJsonModule": true, // Поддержка импорта JSON файлов как модулей
-        "noUnusedLocals": true, // Ошибка при неиспользуемых переменных
-        "noUnusedParameters": true, // Ошибка при неиспользуемых параметрах
-        "noImplicitReturns": true, // Ошибка при отсутствии return в некоторых ветках функции
-        "noFallthroughCasesInSwitch": true, // Ошибка при неявном падении в switch
-        "useUnknownInCatchVariables": true // Использование unknown вместо any в переменных catch
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "strictPropertyInitialization": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "alwaysStrict": true,
+        "skipLibCheck": true,
+        "skipDefaultLibCheck": true,
+        "resolveJsonModule": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noFallthroughCasesInSwitch": true,
+        "useUnknownInCatchVariables": true
     }
 }

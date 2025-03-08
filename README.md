@@ -3,7 +3,7 @@ ezi-cli - a tool on top of yargs for creating simple CLI
 After installation you will be prompted to initialize the cli:
 
 ```bash
-execute initialization command? (yes):
+execute initialization command? (yes): yes
 ```
 
 If you did not agree, you can initialize the CLI using:
@@ -11,7 +11,7 @@ If you did not agree, you can initialize the CLI using:
 ```bash
 # you can choose your file name. Supported extensions: json, yaml
 $ ezi init-cli -p ./ezi-cli.json
-create test scripts (yes):
+create test scripts (yes): yes
 ```
 
 after that you will be asked to create script files, write yes.
@@ -23,7 +23,7 @@ Once the configuration file is created, you will see something like this in it:
     "scripts-path": "./cli-scripts",
     "commands": {
         "test": {
-            "handler": "test.js",
+            "handler": "test-cli.js",
             "description": "test ESM handler",
             "flags": {
                 "your-name": {
@@ -35,7 +35,7 @@ Once the configuration file is created, you will see something like this in it:
             }
         },
         "test-commonJS": {
-            "handler": "test.cjs",
+            "handler": "test-cli.cjs",
             "description": "test CommonJS handler",
             "flags": {
                 "your-name": {
@@ -53,7 +53,7 @@ Once the configuration file is created, you will see something like this in it:
 You will also have files created:
 
 ```js
-// cli-scripts/test.js
+// cli-scripts/test-cli.js
 export default function (argv) {
     console.log(`your command: ${argv._}`);
     console.log(`your flag: ${argv['your-name']}`);
@@ -75,4 +75,4 @@ If you want to change the path to your configuration file or change its name:
 $ ezi change-cli [path-to-config]
 ```
 
-After that you can simply add new commands and scripts, the scripts will receive argv from the yargs library. Just make the default export anonymous function in the scripts please
+After that you can simply add new commands and scripts, the scripts will receive argv from the yargs library. Just make the default export function in the scripts
