@@ -5,7 +5,7 @@ import { InitConfig } from '../../scripts/init/init.js';
 export class InitCommand extends BaseCommand {
     constructor() {
         super(
-            'init-ezi-cli',
+            'init-cli',
             'initialize ezi-cli',
             (yargs: Argv) => {
                 return yargs.option('config-file-path', {

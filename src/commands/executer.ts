@@ -1,7 +1,7 @@
 import path from 'path';
 import { Message } from '../util/message.js';
 
-export class HandlerExecuter {
+export class CommandExecuter {
     static async use(handlerPath: string, argv: any): Promise<void> {
         const absolutePath = `file://${path.resolve(handlerPath)}`;
         try {
@@ -19,7 +19,7 @@ export class HandlerExecuter {
         } catch (error) {
             Message.error({
                 error: error,
-                comment: 'when trying to export and execute the function'
+                comment: 'hen trying to export and execute the function'
             });
         }
     }

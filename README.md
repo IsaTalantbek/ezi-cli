@@ -1,12 +1,17 @@
 ezi-cli - a tool on top of yargs for creating simple CLI
 
+After installation you will be prompted to initialize the cli:
+
 ```bash
-npm install ezi-cli
+execute initialization command? (yes):
 ```
+
+If you did not agree, you can initialize the CLI using:
 
 ```bash
 # you can choose your file name. Supported extensions: json, yaml
-ezi init-ezi-cli -p ./ezi-cli.json
+$ ezi init-cli -p ./ezi-cli.json
+create test scripts (yes):
 ```
 
 after that you will be asked to create script files, write yes.
@@ -15,22 +20,29 @@ Once the configuration file is created, you will see something like this in it:
 
 ```json
 {
+    "scripts-path": "./cli-scripts",
     "commands": {
         "test": {
-            "handler": "./cli-scripts/test.js",
+            "handler": "test.js",
             "description": "test ESM handler",
             "flags": {
                 "your-name": {
-                    "type": "string"
+                    "alias": "n",
+                    "type": "string",
+                    "description": "your-name",
+                    "default": "NaN"
                 }
             }
         },
         "test-commonJS": {
-            "handler": "./cli-scripts/test.cjs",
+            "handler": "test.cjs",
             "description": "test CommonJS handler",
             "flags": {
                 "your-name": {
-                    "type": "string"
+                    "alias": "n",
+                    "type": "string",
+                    "description": "your-name",
+                    "default": "NaN"
                 }
             }
         }
@@ -51,7 +63,16 @@ export default function (argv) {
 you can use the command to run
 
 ```bash
-ezi test --your-name john
+$ ezi test -n john
+
+your command: test
+your flag: john
+```
+
+If you want to change the path to your configuration file or change its name:
+
+```bash
+$ ezi change-cli [path-to-config]
 ```
 
 After that you can simply add new commands and scripts, the scripts will receive argv from the yargs library. Just make the default export anonymous function in the scripts please

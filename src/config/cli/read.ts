@@ -1,10 +1,10 @@
 import path from 'path';
 import { Message } from '../../util/message.js';
-import { Constants } from '../constants/constants.js';
 import fs from 'fs';
 import yaml from 'yaml';
 import { Options } from 'yargs';
 import { FileExtension } from '../../util/file.extension.js';
+import { PackageJson } from '../package.json/read.js';
 
 export interface CommandConfig {
     handler: string;
@@ -15,6 +15,7 @@ export interface CommandConfig {
 }
 
 export interface CLIConfig {
+    'scripts-path': string;
     commands: {
         [command: string]: CommandConfig;
     };
@@ -22,7 +23,11 @@ export interface CLIConfig {
 
 export class ReadConfigFile {
     static getConfig(error: boolean): CLIConfig | null {
-        const configPath = Constants.getConstants()['config-file-path'];
+        const configPath = PackageJson.getEziCliPath(error) as string;
+
+        if (!configPath) {
+            return null;
+        }
 
         const fullConfigPath = path.resolve(configPath);
 

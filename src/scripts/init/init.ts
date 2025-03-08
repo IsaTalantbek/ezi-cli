@@ -1,11 +1,11 @@
 import fs from 'fs-extra';
-import readline from 'readline';
+import { createInterface } from 'readline';
 import { FileExtension } from '../../util/file.extension.js';
 import yaml from 'yaml';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { SyncConfigs } from '../sync/sync.js';
 import { Message } from '../../util/message.js';
+import { PackageJson } from '../../config/package.json/read.js';
 
 export class InitConfig {
     path: string = './ezi-cli.json';
@@ -19,33 +19,35 @@ export class InitConfig {
         this.test = await this.inputCreateTest();
         this.configFile();
         this.test ? this.testScripts() : null;
-        SyncConfigs.use();
     }
 
     private configFile(): void {
         try {
-            const rawData = fs.readFileSync('./package.json', 'utf-8');
-
-            const packageJson = JSON.parse(rawData);
-
             const config = {
+                'scripts-path': './cli-scripts',
                 commands: this.test
                     ? {
                           test: {
-                              handler: './cli-scripts/test.js',
+                              handler: 'test.js',
                               description: 'test ESM handler',
                               flags: {
                                   'your-name': {
-                                      type: 'string'
+                                      alias: 'n',
+                                      type: 'string',
+                                      description: 'your-name',
+                                      default: 'NaN'
                                   }
                               }
                           },
                           'test-commonJS': {
-                              handler: './cli-scripts/test.cjs',
+                              handler: 'test.cjs',
                               description: 'test CommonJS handler',
                               flags: {
                                   'your-name': {
-                                      type: 'string'
+                                      alias: 'n',
+                                      type: 'string',
+                                      description: 'your-name',
+                                      default: 'NaN'
                                   }
                               }
                           }
@@ -57,15 +59,16 @@ export class InitConfig {
                 FileExtension.get(this.path) === 'json'
                     ? JSON.stringify(config, null, 2)
                     : yaml.stringify(config);
+            fs.writeFileSync(this.path, data);
+
+            const packageJson = PackageJson.read();
+
             if (!packageJson.config) {
                 packageJson.config = {}; // Если config нет, создаем его
             }
             packageJson.config['ezi-cli-path'] = this.path;
-            fs.writeFileSync(
-                './package.json',
-                JSON.stringify(packageJson, null, 2)
-            );
-            fs.writeFile(this.path, data);
+
+            PackageJson.write(packageJson);
         } catch (error) {
             Message.error({
                 error: error,
@@ -82,11 +85,11 @@ export class InitConfig {
             '../../samples/cli-scripts'
         );
 
-        fs.copy(src, './cli-scripts');
+        fs.copySync(src, './cli-scripts');
     }
 
     private async inputCreateTest(): Promise<boolean> {
-        const rl = readline.createInterface({
+        const rl = createInterface({
             input: process.stdin,
             output: process.stdout
         });

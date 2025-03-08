@@ -1,6 +1,6 @@
 {
     "name": "ezi-cli",
-    "version": "0.1.4",
+    "version": "1.0.0",
     "license": "ISC",
     "type": "module",
     "author": "isat",
@@ -26,6 +26,9 @@
     "files": [
         "dist"
     ],
+    "engines": {
+        "node": ">=12"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/IsaTalantbek/ezi-cli.git"
@@ -38,5 +41,8 @@
         "ezi-cli",
         "yargs",
         "easy-cli"
-    ]
+    ],
+    "config": {
+        "ezi-cli-path": "./ezi-cli.json"
+    }
 }

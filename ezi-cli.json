@@ -1,0 +1,29 @@
+{
+  "scripts-path": "./cli-scripts",
+  "commands": {
+    "test": {
+      "handler": "test.js",
+      "description": "test ESM handler",
+      "flags": {
+        "your-name": {
+          "alias": "n",
+          "type": "string",
+          "description": "your-name",
+          "default": "NaN"
+        }
+      }
+    },
+    "test-commonJS": {
+      "handler": "test.cjs",
+      "description": "test CommonJS handler",
+      "flags": {
+        "your-name": {
+          "alias": "n",
+          "type": "string",
+          "description": "your-name",
+          "default": "NaN"
+        }
+      }
+    }
+  }
+}

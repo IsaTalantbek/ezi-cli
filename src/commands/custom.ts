@@ -1,10 +1,15 @@
 import { Argv } from 'yargs';
 import { CommandConfig } from '../config/cli/read.js';
 import { BaseCommand } from './base.js';
-import { HandlerExecuter } from './executer.js';
+import { CommandExecuter } from './executer.js';
+import path from 'path';
 
 export class UserCommand extends BaseCommand {
-    constructor(command: string, commandConfig: CommandConfig) {
+    constructor(
+        scriptsPath: string,
+        command: string,
+        commandConfig: CommandConfig
+    ) {
         super(
             command,
             commandConfig.description || 'description is missing',
@@ -19,7 +24,10 @@ export class UserCommand extends BaseCommand {
                 return yargs;
             },
             async (argv: any) => {
-                await HandlerExecuter.use(commandConfig.handler, argv);
+                await CommandExecuter.use(
+                    path.join(scriptsPath, commandConfig.handler),
+                    argv
+                );
             }
         );
     }

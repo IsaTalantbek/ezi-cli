@@ -5,12 +5,20 @@ import { CLIConfig, ReadConfigFile } from '../config/cli/read.js';
 import { CommandLoader } from '../commands/loader.js';
 import { UserCommand } from '../commands/custom.js';
 import { InitCommand } from '../commands/system/init.js';
-import { SyncCommand } from '../commands/system/sync.js';
+import { Message } from '../util/message.js';
+import { ChangeCommand } from '../commands/system/change.js';
 
 class CLI {
     config: CLIConfig;
     constructor() {
         this.config = ReadConfigFile.getConfig(false) as CLIConfig;
+        if (this.config) {
+            if (!this.config['scripts-path']) {
+                Message.error({
+                    error: 'your-config-file/scripts-path is not exist'
+                });
+            }
+        }
     }
     async run() {
         const yargsInstance = yargs(hideBin(process.argv))
@@ -23,12 +31,16 @@ class CLI {
                 this.config.commands
             )) {
                 commandsLoader.addCommand(
-                    new UserCommand(commandName, commandConfig)
+                    new UserCommand(
+                        this.config['scripts-path'],
+                        commandName,
+                        commandConfig
+                    )
                 );
             }
         }
         commandsLoader.addCommand(new InitCommand());
-        commandsLoader.addCommand(new SyncCommand());
+        commandsLoader.addCommand(new ChangeCommand());
 
         commandsLoader.loadCommands();
         yargsInstance.parseAsync();
