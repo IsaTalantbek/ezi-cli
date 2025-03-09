@@ -5,17 +5,18 @@ import { CLIConfig, ReadConfigFile } from '../config/cli/read.js';
 import { CommandLoader } from '../commands/loader.js';
 import { UserCommand } from '../commands/custom.js';
 import { InitCommand } from '../commands/system/init.js';
-import { Message } from '../util/message.js';
 import { ChangeCommand } from '../commands/system/change.js';
+import ezcl from 'ezi-console';
 
 class CLI {
     config: CLIConfig;
     constructor() {
-        this.config = ReadConfigFile.getConfig(false) as CLIConfig;
+        this.config = ReadConfigFile.getConfig(false, true) as CLIConfig;
         if (this.config) {
             if (!this.config['scripts-path']) {
-                Message.error({
-                    error: 'your-config-file/scripts-path is not exist'
+                ezcl.error({
+                    error: 'your-config-file/scripts-path is not exist',
+                    exit: true
                 });
             }
         }

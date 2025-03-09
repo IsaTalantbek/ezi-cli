@@ -1,5 +1,5 @@
+import ezcl from 'ezi-console';
 import path from 'path';
-import { Message } from '../util/message.js';
 
 export class CommandExecuter {
     static async use(handlerPath: string, argv: any): Promise<void> {
@@ -11,15 +11,17 @@ export class CommandExecuter {
             } else if (typeof module === 'function') {
                 await module(argv);
             } else {
-                Message.error({
+                ezcl.error({
                     error: 'Handler module does not export a function',
-                    comment: 'Make default export a function'
+                    comment: 'Make default export a function',
+                    exit: true
                 });
             }
         } catch (error) {
-            Message.error({
+            ezcl.error({
                 error: error,
-                comment: 'hen trying to export and execute the function'
+                comment: 'hen trying to export and execute the function',
+                exit: true
             });
         }
     }

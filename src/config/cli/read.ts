@@ -1,10 +1,10 @@
 import path from 'path';
-import { Message } from '../../util/message.js';
 import fs from 'fs';
 import yaml from 'yaml';
 import { Options } from 'yargs';
 import { FileExtension } from '../../util/file.extension.js';
 import { PackageJson } from '../package.json/read.js';
+import ezcl from 'ezi-console';
 
 export interface CommandConfig {
     handler: string;
@@ -22,8 +22,11 @@ export interface CLIConfig {
 }
 
 export class ReadConfigFile {
-    static getConfig(error: boolean): CLIConfig | null {
-        const configPath = PackageJson.getEziCliPath(error) as string;
+    static getConfig(
+        errorExist?: boolean,
+        errorPath?: boolean
+    ): CLIConfig | null {
+        const configPath = PackageJson.getEziCliPath(errorExist) as string;
 
         if (!configPath) {
             return null;
@@ -34,10 +37,11 @@ export class ReadConfigFile {
         if (fs.existsSync(fullConfigPath)) {
             const rawData = fs.readFileSync(fullConfigPath, 'utf-8');
             if (!rawData) {
-                if (error) {
-                    Message.error({
+                if (errorExist) {
+                    ezcl.error({
                         path: configPath,
-                        error: 'config file is empty'
+                        error: 'config file is empty',
+                        exit: true
                     });
                 }
                 return null;
@@ -49,17 +53,20 @@ export class ReadConfigFile {
                 case 'yaml':
                     return yaml.parse(rawData);
                 default:
-                    Message.error({
+                    ezcl.error({
                         path: fullConfigPath,
-                        error: `config file has invalid extension, available extensions: "json", "yaml"`
+                        error: `config file has invalid extension, available extensions: "json", "yaml"`,
+                        exit: true
                     });
             }
             return JSON.parse(rawData);
         } else {
-            if (error) {
-                Message.error({
+            if (errorPath) {
+                ezcl.error({
                     path: fullConfigPath,
-                    error: 'config file was not found'
+                    error: 'config file was not found',
+                    comment: 'check package.json/config.ezi-cli-path',
+                    exit: true
                 });
             }
             return null;

@@ -4,8 +4,8 @@ import { FileExtension } from '../../util/file.extension.js';
 import yaml from 'yaml';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { Message } from '../../util/message.js';
 import { PackageJson } from '../../config/package.json/read.js';
+import ezcl from 'ezi-console';
 
 export class InitConfig {
     path: string = './ezi-cli.json';
@@ -70,10 +70,11 @@ export class InitConfig {
 
             PackageJson.write(packageJson);
         } catch (error) {
-            Message.error({
+            ezcl.error({
                 error: error,
                 comment:
-                    'when trying to create a configuration file, and also add the path to it in package.json/config.ezi-cli-path'
+                    'when trying to create a configuration file, and also add the path to it in package.json/config.ezi-cli-path',
+                exit: true
             });
         }
     }

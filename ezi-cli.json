@@ -2,7 +2,7 @@
   "scripts-path": "./cli-scripts",
   "commands": {
     "test": {
-      "handler": "test.js",
+      "handler": "test-cli.js",
       "description": "test ESM handler",
       "flags": {
         "your-name": {
@@ -14,7 +14,7 @@
       }
     },
     "test-commonJS": {
-      "handler": "test.cjs",
+      "handler": "test-cli.cjs",
       "description": "test CommonJS handler",
       "flags": {
         "your-name": {
