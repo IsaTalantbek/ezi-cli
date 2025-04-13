@@ -3,7 +3,7 @@ import fs from 'fs';
 import yaml from 'yaml';
 import { Options } from 'yargs';
 import { FileExtension } from '../../util/file.extension.js';
-import { PackageJson } from '../package.json/read.js';
+import { PackageJson } from '../package.json.js';
 import ezcl from 'ezi-console';
 
 export interface CommandConfig {

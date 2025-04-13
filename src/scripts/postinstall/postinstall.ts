@@ -1,9 +1,9 @@
 import fs from 'fs';
 import { createInterface } from 'readline';
-import { InitConfig } from '../init/init.js';
+import { InitHandler } from '../init/init.js';
 
-export class Postinstall {
-    public static async syncConfigs(): Promise<void> {
+class Postinstall {
+    public async syncConfigs(): Promise<void> {
         const rawData = fs.readFileSync('package.json', 'utf-8');
         const packageJson = JSON.parse(rawData);
         if (packageJson?.config) {
@@ -13,11 +13,15 @@ export class Postinstall {
         }
         const init = await this.inputInitCLI();
         if (init) {
-            const init = new InitConfig('./ezi-cli.json');
-            await init.handler();
+            await new InitHandler({
+                _: ['postinstall'],
+                $0: 'ezi',
+                'config-file-path': './ezi-cli.json',
+                configFilePath: './ezi-cli.json'
+            }).use();
         }
     }
-    private static async inputInitCLI(): Promise<boolean> {
+    private async inputInitCLI(): Promise<boolean> {
         const rl = createInterface({
             input: process.stdin,
             output: process.stdout
@@ -36,4 +40,7 @@ export class Postinstall {
     }
 }
 
-Postinstall.syncConfigs();
+(async () => {
+    const postinstall = new Postinstall();
+    await postinstall.syncConfigs();
+})();

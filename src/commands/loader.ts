@@ -1,13 +1,12 @@
-// CommandLoader.ts
 import { Argv } from 'yargs';
-import { ICommand } from './base.js';
+import { SampleCommand } from './sample.js';
 
 export class CommandLoader {
-    private commands: ICommand[] = [];
+    private commands: SampleCommand<any>[] = [];
 
     constructor(private yargsInstance: Argv) {}
 
-    public addCommand(command: ICommand): void {
+    public addCommand(command: SampleCommand<any>): void {
         this.commands.push(command);
     }
 

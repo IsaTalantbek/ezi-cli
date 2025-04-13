@@ -1,13 +1,13 @@
-import { Argv } from 'yargs';
-import { BaseCommand } from '../base.js';
-import { InitConfig } from '../../scripts/init/init.js';
+import { ArgumentsCamelCase } from 'yargs';
+import { InitHandler, InitHandlerArgs } from '../../scripts/init/init.js';
+import { SampleCommand } from '../sample.js';
 
-export class InitCommand extends BaseCommand {
+export class InitCommand extends SampleCommand<InitHandlerArgs> {
     constructor() {
         super(
             'init-cli',
             'initialize ezi-cli',
-            (yargs: Argv) => {
+            (yargs) => {
                 return yargs.option('config-file-path', {
                     alias: 'p',
                     description:
@@ -16,10 +16,8 @@ export class InitCommand extends BaseCommand {
                     default: './ezi-cli.json'
                 });
             },
-            async (argv: any) => {
-                await new InitConfig(argv['config-file-path']).handler.bind(
-                    new InitConfig(argv['config-file-path'])
-                )();
+            async (args: ArgumentsCamelCase<InitHandlerArgs>) => {
+                await new InitHandler(args).use();
             }
         );
     }

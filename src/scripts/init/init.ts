@@ -4,18 +4,19 @@ import { FileExtension } from '../../util/file.extension.js';
 import yaml from 'yaml';
 import { fileURLToPath } from 'url';
 import path from 'path';
-import { PackageJson } from '../../config/package.json/read.js';
+import { PackageJson } from '../../config/package.json.js';
 import ezcl from 'ezi-console';
+import { SampleHandler } from '../sample.js';
 
-export class InitConfig {
-    path: string = './ezi-cli.json';
+export interface InitHandlerArgs {
+    'config-file-path': string;
+}
+
+export class InitHandler extends SampleHandler<InitHandlerArgs> {
+    path: string = this.args.configFilePath;
     test: boolean = true;
 
-    constructor(path: string) {
-        this.path = path;
-    }
-
-    public async handler(): Promise<void> {
+    public async use(): Promise<void> {
         this.test = await this.inputCreateTest();
         this.configFile();
         this.test ? this.testScripts() : null;
@@ -69,7 +70,7 @@ export class InitConfig {
             packageJson.config['ezi-cli-path'] = this.path;
 
             PackageJson.write(packageJson);
-        } catch (error) {
+        } catch (error: Error | any) {
             ezcl.error({
                 error: error,
                 comment:

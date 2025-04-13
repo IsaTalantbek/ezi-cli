@@ -1,15 +1,17 @@
 #!/usr/bin/env node
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { CLIConfig, ReadConfigFile } from '../config/cli/read.js';
 import { CommandLoader } from '../commands/loader.js';
 import { UserCommand } from '../commands/custom.js';
 import { InitCommand } from '../commands/system/init.js';
 import { ChangeCommand } from '../commands/system/change.js';
 import ezcl from 'ezi-console';
+import { SampleCommand } from '../commands/sample.js';
+import { CLIConfig, ReadConfigFile } from '../config/cli/read.js';
 
 class CLI {
     config: CLIConfig;
+
     constructor() {
         this.config = ReadConfigFile.getConfig(false, true) as CLIConfig;
         if (this.config) {
@@ -21,6 +23,7 @@ class CLI {
             }
         }
     }
+
     async run() {
         const yargsInstance = yargs(hideBin(process.argv))
             .scriptName('ezi')
@@ -40,8 +43,8 @@ class CLI {
                 );
             }
         }
-        commandsLoader.addCommand(new InitCommand());
-        commandsLoader.addCommand(new ChangeCommand());
+        commandsLoader.addCommand(new InitCommand() as SampleCommand<any>);
+        commandsLoader.addCommand(new ChangeCommand() as SampleCommand<any>);
 
         commandsLoader.loadCommands();
         yargsInstance.parseAsync();
